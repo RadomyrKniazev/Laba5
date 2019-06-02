@@ -28,55 +28,55 @@ namespace Laba5
         static void Main(string[] args)
         {
             Student[] studs = ReadData("input.txt");
-            double middleMark = FindMiddleMark(studs);
-            FindStudentWithMiddleMarkMoreThanTotal(studs, middleMark);
+            double[] subjectsMarks = FindMiddleSubjectMark(studs);
+            FindStudentWithMiddleMarkMoreThanTotal(studs, subjectsMarks);
             Console.ReadKey();
         }
 
-        private static double FindMiddleMark(Student[] studs)
+        private static double[] FindMiddleSubjectMark(Student[] studs)
         {
-            double middleMark = 0;
             bool isNum = true;
+            double[] subjectsMarks = new double[3];
             for (int i = 0; i < studs.Length; i++)
             {
-                double math = 0;
-                double physics = 0;
-                double inf = 0;
-                if (Char.IsDigit(studs[i].mathematicsMark) == isNum) {  
-                    math += Char.GetNumericValue(studs[i].mathematicsMark);
+                if (Char.IsDigit(studs[i].mathematicsMark) == isNum) {
+                    subjectsMarks[0] += Char.GetNumericValue(studs[i].mathematicsMark); //m
+                }                                                                       //a
+                else                                                                    //t
+                {                                                                       //h
+                    subjectsMarks[0] += 0;
                 }
-                else
-                {
-                    math += 0;
+                if (Char.IsDigit(studs[i].physicsMark) == isNum)                        //p
+                {                                                                       //h
+                    subjectsMarks[1] += Char.GetNumericValue(studs[i].physicsMark);     //y
+                }                                                                       //s
+                else                                                                    //i
+                {                                                                       //c
+                    subjectsMarks[1] += 0;                                              //s                       
                 }
-                if (Char.IsDigit(studs[i].physicsMark) == isNum)
-                { 
-                    physics += Char.GetNumericValue(studs[i].physicsMark);
-                }
-                else
-                {
-                    physics += 0;
-                }
-                if (Char.IsDigit(studs[i].informaticsMark) == isNum)
-                {
-                    inf += Char.GetNumericValue(studs[i].informaticsMark);
-                }
-                else
-                {
-                    inf += 0;
-                }
-                middleMark += (math + physics + inf);
+                if (Char.IsDigit(studs[i].informaticsMark) == isNum)                    //i
+                {                                                                       //n                
+                    subjectsMarks[2] += Char.GetNumericValue(studs[i].informaticsMark); //f
+                }                                                                       //o        
+                else                                                                    //r
+                {                                                                       //m            
+                    subjectsMarks[2] += 0;                                              //a            
+                }                                                                       //tics    
                 if(i + 1 == studs.Length)
                 {
-                    middleMark /= (3 * studs.Length);
-                    Console.WriteLine("Middle mark of all students: {0}", middleMark);
+                    subjectsMarks[0] /= studs.Length;
+                    subjectsMarks[1] /= studs.Length;
+                    subjectsMarks[2] /= studs.Length;
+                    Console.WriteLine("Middle math mark: {0}; middle physics mark: {1}; middle informatics mark: {2}", subjectsMarks[0], subjectsMarks[1], subjectsMarks[2]);
                 }
             }
-            return middleMark;
+            return subjectsMarks;
         }
 
-        private static void FindStudentWithMiddleMarkMoreThanTotal(Student[] studs, double middleMark)
+        private static void FindStudentWithMiddleMarkMoreThanTotal(Student[] studs, double[] subjectsMarks)
         {
+            double middleMark = 0;
+            middleMark = (subjectsMarks[0] + subjectsMarks[1] + subjectsMarks[2]) / 3;
             double studentMiddleMark = 0;
             bool isNum = true;
             double[] studentsMiddleMark = new double[studs.Length];
@@ -109,10 +109,12 @@ namespace Laba5
                 {
                     inf = 0;
                 }
+                
                 studentMiddleMark = (math + physics + inf) / 3;
                 studentsMiddleMark[i] = studentMiddleMark;
             }
 
+            Console.WriteLine("Total middle mark: " + middleMark);
             for (int i = 0; i < studs.Length; i++)
             {
                 if(studentsMiddleMark[i] > middleMark)
